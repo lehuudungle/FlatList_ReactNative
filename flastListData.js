@@ -26,24 +26,24 @@ const flatListData = [
   },
   {
     key: 'Computer',
-    name: 'water',
+    name: 'Mac',
     foodDescription: 'under',
     imageUrl: 'https://picsum.photos/200/300'
   },
   {
     key: 'Iphone',
-    name: 'water',
+    name: 'Ice',
     foodDescription: 'under',
     imageUrl: 'https://picsum.photos/200/300'
   },
   {
     key: 'Cap',
-    name: 'water',
+    name: 'Lightning',
     foodDescription: 'under',
     imageUrl: 'https://picsum.photos/200/300'
   },
   {
-    key: 'Youtube',
+    key: 'Capital',
     name: 'Youtube',
     foodDescription: 'under',
     imageUrl: 'https://picsum.photos/200/300'

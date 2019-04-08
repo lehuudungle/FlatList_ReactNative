@@ -1,17 +1,27 @@
 import {
-  View, FlatList, Text, Image, StyleSheet, Alert
+  View, FlatList, Text, Image, StyleSheet, Alert, Platform, TouchableHighlight
 } from 'react-native';
 import React from 'react';
 import Swipeout from 'react-native-swipeout';
 import flatListData from './flastListData';
-
+import AddModal from "./AddModal";
+import EditModal from "./EditModal";
 
 class FlatListItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeRowkey: null
+      activeRowkey: null,
+      numberOfRefresh: 0
     };
+  }
+
+  refreshFlatListItem = () => {
+    this.setState((prevState) => {
+      return {
+        numberOfRefresh: prevState.numberOfPointers + 1
+      }
+    });
   }
 
   render() {
@@ -27,6 +37,15 @@ class FlatListItem extends React.Component {
       },
 
       right: [
+        {
+          onPress: () => {
+            // alert('Update')
+            this.props.parentFlatList.refs.editModal.showEditModal(flatListData[this.props.index], this)
+          },
+
+          text: 'Edit',
+          type: 'primary'
+        },
         {
           onPress: () => {
             const deletingRow = this.state.activeRowkey;
@@ -99,26 +118,53 @@ export default class HomeScreen extends React.Component {
     this.state = ({
       deletedRowKey: null,
     });
+    this._onPressAdd = this._onPressAdd.bind(this);
   }
 
-    remoteTableView = (deletedKey) => {
+    remoteTableView = (activeKey) => {
       this.setState((prevState )=> {
         return {
-              deletedRowKey: deletedKey
+              deletedRowKey: activeKey
         };
       });
+      this.refs.flatList.scrollToEnd();
+    }
+
+
+    _onPressAdd() {
+     // alert("You add Item")
+      this.refs.addModal.showAddModal();
     }
 
     render() {
       return (
-        <View style={{ flex: 1, marginTop: 0 }}>
+        <View style={{ flex: 1, marginTop: Platform.OS === 'ios'? 0: 0 }}>
+          <View style={{
+            backgroundColor: 'tomato',
+            height: 64,
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center'
+          }}>
+            <TouchableHighlight
+             style={{marginRight: 10}}
+            underlayColor='tomato'
+             onPress={this._onPressAdd}
+            >
+              <Image style={{ width: 35, height: 35 }}
+                     source={require('./ImageSource/plus.png')}
+              ></Image>
+            </TouchableHighlight>
+          </View>
           <FlatList
+            ref={'flatList'}
             data={flatListData}
             renderItem={({ item, index }) => (
               <FlatListItem itemFlat={item} index={index} parentFlatList = { this } />
             )}
           />
-          <Text>Le huu dung</Text>
+          <AddModal ref={'addModal'} parentFlatlist={ this }></AddModal>
+          <EditModal ref={'editModal'} parentFlatlist={ this }></EditModal>
         </View>
       );
     }
