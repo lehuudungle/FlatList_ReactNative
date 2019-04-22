@@ -3,11 +3,11 @@ import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import HomeScreen from './HomeScreen';
 import DetailsScreen from './DetailsScreen';
-
+import HorizontalFlatList from './HorizontalFlatList';
 
 const AppNavigator = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: HorizontalFlatList,
     Details: DetailsScreen
   },
   {
